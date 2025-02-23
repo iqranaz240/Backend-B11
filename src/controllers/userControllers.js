@@ -10,14 +10,7 @@ const getUserByUserId = (req, res) => {
 }
 
 const createCustomer = async (req, res) => {
-    const customerData = {
-        customerId: '4',
-        name: 'Customer 4',
-        contact: 123456,
-        email: 'customer4@yopmail.com',
-        address: 'Karachi'
-    };
-    
+    const customerData = req.body;
     try {
         const customer = new Customer(customerData);
         await customer.save();
@@ -29,5 +22,29 @@ const createCustomer = async (req, res) => {
     }
 };
 
+const getAllCustomers = async(req,res) => {
+    try {
+        const customer = await Customer.find();
+        res.status(200).json({customer})
+    } catch (error) {
+        console.error('Error getting users:', error);
+        res.status(500).json({message: 'Error getting users', error: error})
+    }
+}
 
-module.exports = { getAllUsers, getUserByUserId, createCustomer }
+const getCustomerById = async(req,res) => {
+    const customerId = req.query.customerId
+    try {
+        const customer = await Customer.findOne({customerId});
+        if (customer) {
+            res.status(200).json({customer})
+        } else {
+            res.status(404).json({message: 'Customer not found.'})
+        }
+    } catch (error) {
+        console.error('Error getting users:', error);
+        res.status(500).json({message: 'Error getting users', error: error})
+    }
+}
+
+module.exports = { getAllUsers, getUserByUserId, createCustomer, getAllCustomers, getCustomerById }
