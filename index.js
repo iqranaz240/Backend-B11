@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./db'); // Import DB connection function
-const userRoutes = require('./src/routes/userRoutes')
+const userRoutes = require('./src/routes/userRoutes');
+const cors = require('cors'); // Import the CORS package
 
 const app = express();
 
@@ -9,6 +10,9 @@ connectDB();
 
 // Middleware
 app.use(express.json());
+
+// Enable CORS for all origins
+app.use(cors()); // This allows requests from any origin
 
 // Example Route
 app.get('/', (req, res) => {
