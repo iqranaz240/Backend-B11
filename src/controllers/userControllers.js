@@ -47,4 +47,39 @@ const getCustomerById = async(req,res) => {
     }
 }
 
-module.exports = { getAllUsers, getUserByUserId, createCustomer, getAllCustomers, getCustomerById }
+const updateCustomerById = async(req, res) => {
+    const customerId = req.query.customerId;
+    const updateScript = {
+        $set: {
+            name: req.body.name,
+            email: req.body.email,
+            address: req.body.address,
+            contact: req.body.contact
+        }
+    };
+    try {
+        const customer = await Customer.updateOne({customerId}, updateScript);
+        if (customer) {
+            res.status(200).json({customer})
+        } else {
+            res.status(404).json({message: 'Customer not found.'})
+        }
+    } catch (error) {
+        console.error('Error updating customer:', error);
+        res.status(500).json({message: 'Error updating customer', error: error})
+    }
+}
+
+const deleteCustomerById = async() => {
+
+}
+
+module.exports = { 
+    getAllUsers, 
+    getUserByUserId, 
+    createCustomer, 
+    getAllCustomers, 
+    getCustomerById, 
+    updateCustomerById, 
+    deleteCustomerById 
+}
