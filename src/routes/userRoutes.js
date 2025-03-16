@@ -9,5 +9,7 @@ router.get('/getAllCustomers', userController.getAllCustomers)
 router.get('/getCustomerById', userController.getCustomerById)
 router.put('/updateCustomerById', userController.updateCustomerById)
 router.delete('/deleteCustomerById', userController.deleteCustomerById)
+router.post('/signup', userController.signupCustomer)
+router.post('/login', userController.loginCustomer)
 
 module.exports = router;
