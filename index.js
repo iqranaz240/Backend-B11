@@ -14,8 +14,14 @@ app.use(express.json());
 // Enable CORS for all origins
 app.use(cors()); // This allows requests from any origin
 
+app.use((req, res, next) => {
+    console.log('Middleware executed');
+    next();
+});
+
 // Example Route
 app.get('/', (req, res) => {
+    console.log('got request from main route')
     res.send('MongoDB connected with Express.js');
 });
 
@@ -28,3 +34,4 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+

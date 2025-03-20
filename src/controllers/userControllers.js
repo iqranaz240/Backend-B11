@@ -1,6 +1,9 @@
 const Customer = require("../models/customer");
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const jwtSecret = 'mySecret';
 
 const getAllUsers = (req, res) => {
     res.send('My all users');
@@ -44,6 +47,7 @@ const signupCustomer = async (req, res) => {
 
 const loginCustomer = async (req, res) => {
     const { email, password } = req.body;
+    let token = null;
 
     try {
         const customer = await Customer.findOne({ email });
@@ -57,13 +61,18 @@ const loginCustomer = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
-        res.status(200).json({ message: 'Login successful', customer });
+        token = await jwt.sign({ email: customer.email, role: 'customer' }, jwtSecret, {
+            expiresIn: 86400 // expires in 24 hours
+        });
+
+        console.log(token)
+        res.status(200).json({ token: token, email: customer.email, msg: 'successfully logged in.' });
+
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ message: 'Error logging in', error: error.message });
     }
 };
-
 
 const getAllCustomers = async(req,res) => {
     try {
