@@ -66,7 +66,7 @@ const loginCustomer = async (req, res) => {
         });
 
         console.log(token)
-        res.status(200).json({ token: token, email: customer.email, msg: 'successfully logged in.' });
+        res.status(200).json({ token: token, email: customer.email, customerId: customer.customerId, msg: 'successfully logged in.' });
 
     } catch (error) {
         console.error('Error logging in:', error);

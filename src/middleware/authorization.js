@@ -15,7 +15,7 @@ const checkAdmin = (req, res, next) => {
         }
         next();
     } catch (error) {
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Token is not correct. Try Again.' });
     }
 }
 
@@ -25,12 +25,14 @@ const checkValidUser = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, jwtSecret);
         const customer = await Customer.findOne({email: decoded.email});
-        if(req.query.customerId !== customer.customerId) {
+        console.log(customer)
+        if(req.query.customerId != customer.customerId) {
             return res.status(403).send({ auth: false, message: 'Unauthorized.' });
         }
         next();
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.log(error)
+        res.status(500).json({ error: 'Token is not correct. Try Again.' });
     }
 }
 
